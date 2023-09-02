@@ -1,28 +1,7 @@
 
-import {  createAsyncThunk, createSlice } from "@reduxjs/toolkit";
+import { createSlice } from "@reduxjs/toolkit";
 
 
-export const fetchPosts = createAsyncThunk('api/user',async ()=>{
-    try {
-        const response = await fetch(process.env.REACT_APP_USER_URL);
-        const data= await response.json();
-
-        return data;
-    } catch (e) {
-        console.log(e.message);
-    }
-});
-export const fetchComment = createAsyncThunk('api/comments',async ()=>{
-
-    try {
-        const response = await fetch(process.env.REACT_APP_COMMENT_URL);
-        const data= await response.json();
-        return data;
-    } catch (e) {
-        console.log(e.message);
-    }
-
-});
 
 const appConfigSlice = createSlice({
     name: "appConfigSlice",
@@ -32,7 +11,8 @@ const appConfigSlice = createSlice({
         toastData:{},
         posts:[],
         comments:[],
-        loading:false
+        loading:false,
+        updated:[]
     },
     reducers: {
         setLoading: (state, action) => {
@@ -44,14 +24,6 @@ const appConfigSlice = createSlice({
         setLoader:(state,action)=>{
             state.loading=action.payload;
         }
-    },
-    extraReducers : (builder) =>{
-        builder.addCase(fetchPosts.fulfilled,(state,action)=>{
-            state.posts=action.payload;
-        })
-        .addCase(fetchComment.fulfilled,(state,action)=>{
-            state.comments=action.payload;
-        })
     }
 });
 

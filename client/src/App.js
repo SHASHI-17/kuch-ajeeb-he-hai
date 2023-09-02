@@ -8,7 +8,7 @@ import './index.css';
 import './App.css';
 import LoadingBar from 'react-top-loading-bar';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect, useRef } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import OnlyIfNotLoggedIn from './components/OnlyIfNotLoggedIn';
 import toast, { Toaster } from 'react-hot-toast';
 import { fetchComment, fetchPosts } from './redux/Slices/appConfigSlice';
@@ -22,6 +22,8 @@ function App() {
   const isLoading = useSelector(state => state.appConfigReducer.isLoading);
   const toastData = useSelector(state => state.appConfigReducer.toastData);
   const loadingRef = useRef(null);
+
+  const [posts,setPosts]=useState([]);
 
   useEffect(() => {
     if (isLoading) {
@@ -42,11 +44,6 @@ function App() {
     }
   }, [toastData]);
 
-  const dispatch = useDispatch();
-  useEffect(() => {
-    dispatch(fetchPosts());
-    dispatch(fetchComment());
-  },[])
 
   return (
     <div className='App '>
@@ -58,9 +55,9 @@ function App() {
 
           <Route element={<RequireUSer />} >
             <Route path='/home' element={<Home/>}></Route>
-            <Route path='/dashboard' element={<Feed />}></Route>
+            <Route path='/dashboard' element={<Feed/>}></Route>
             <Route path='/post/:id' element={<Comment />}></Route>
-            <Route path='/details' element={<UserProfileForm />}></Route>
+            <Route path='/details/:uid' element={<UserProfileForm  />}></Route>
           </Route>
         
 
